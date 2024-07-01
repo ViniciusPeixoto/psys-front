@@ -10,7 +10,6 @@ const TreesPage = () => {
         const fetchTrees = async () => {
             try{
                 const treesData = await listTrees();
-                console.log('trees data:', treesData)
                 setTreesData(treesData)
                 setLoading(false);
             } catch (error) {

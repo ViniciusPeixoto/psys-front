@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getCurrentUser, getProfile } from '../components/api';
 import { Button, Container, ListGroup } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { format } from 'date-fns';
+import { formatDateTime } from '../components/dateFormatter';
 
 const ProfilePage = () => {
     const [profileData, setProfileData] = useState(null);
@@ -20,7 +20,6 @@ const ProfilePage = () => {
                 setUser(userData);
 
                 const profileData = await getProfile(userData.id);
-                console.log('profile data:', profileData)
                 setProfileData(profileData)
                 setLoading(false);
             } catch (error) {
@@ -31,11 +30,6 @@ const ProfilePage = () => {
 
         fetchCurrentUser();
     }, []);
-
-    const formatDateTime = (dateTime) => {
-        const date = new Date(dateTime)
-        return format(date, 'd MMMM u')
-    }
 
     return (
         <Container className='mt-5'>
@@ -58,11 +52,11 @@ const ProfilePage = () => {
             {loading ? (
                 <Button variant='primary'></Button>
             ) : profileData ? (
-                <Link to="/update_profile" state={{isEdit: true, profile: profileData}}>
+                <Link to="/update-profile" state={{isEdit: true, profile: profileData}}>
                     <Button variant='primary'>Update profile</Button>
                 </Link>
             ) : (
-                <Link to="/update_profile" state={{isEdit: false, userId: user.id}}>
+                <Link to="/update-profile" state={{isEdit: false, userId: user.id}}>
                     <Button variant='primary'>Create profile</Button>
                 </Link>
             )}

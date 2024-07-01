@@ -11,7 +11,8 @@ const NavBarComponent = () => {
                     <Nav.Link href='/'>Home</Nav.Link>
                     <Nav.Link href='/profile'>Profile</Nav.Link>
                     <NavDropdown title='Trees' id='basic-nav-dropdown'>
-                        <NavDropdown.Item href='/planted'>Planted Trees</NavDropdown.Item>
+                        <NavDropdown.Item href='/planted'>Your Planted Trees</NavDropdown.Item>
+                        <NavDropdown.Item href='/account-planted'>Your Account Planted Trees</NavDropdown.Item>
                         <NavDropdown.Item href='/trees'>Tree Collection</NavDropdown.Item>
                     </NavDropdown>
                 </Nav>
