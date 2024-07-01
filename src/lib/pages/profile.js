@@ -19,8 +19,10 @@ const ProfilePage = () => {
                 const userData = await user_response.json();
                 setUser(userData);
 
-                const profileData = await getProfile(userData.id);
-                setProfileData(profileData)
+                if (userData) {
+                    const profileData = await getProfile(userData.id);
+                    setProfileData(profileData)
+                }
                 setLoading(false);
             } catch (error) {
                 console.error('Error fetching current user:', error)
@@ -31,34 +33,42 @@ const ProfilePage = () => {
         fetchCurrentUser();
     }, []);
 
+    const renderProfileInformation = () => {
+        return (
+            <Container>
+                <h3>{user.username}</h3>
+                {profileData ? (
+                    <ListGroup>
+                        <ListGroup.Item><strong>About:</strong> {profileData.about}</ListGroup.Item>
+                        <ListGroup.Item><strong>Date joined:</strong> {formatDateTime(profileData.joined)}</ListGroup.Item>
+                    </ListGroup>
+                ) : (
+                    <p>No profile data to show</p>
+                )}
+                {loading ? (
+                    <Button variant='primary'></Button>
+                ) : profileData ? (
+                    <Link to="/update-profile" state={{isEdit: true, profile: profileData}}>
+                        <Button variant='primary'>Update profile</Button>
+                    </Link>
+                ) : (
+                    <Link to="/update-profile" state={{isEdit: false, userId: user.id}}>
+                        <Button variant='primary'>Create profile</Button>
+                    </Link>
+                )}
+            </Container>
+        )
+    }
+
     return (
         <Container className='mt-5'>
             <h2>Profile information</h2>
             {loading ? (
                 <p>Loading profile information...</p>
             ) : user ? (
-                <h3>{user.username}</h3>
+                renderProfileInformation()
             ) : (
                 <p>Please login to see profile information</p>
-            )}
-            {profileData ? (
-                <ListGroup>
-                    <ListGroup.Item><strong>About:</strong> {profileData.about}</ListGroup.Item>
-                    <ListGroup.Item><strong>Date joined:</strong> {formatDateTime(profileData.joined)}</ListGroup.Item>
-                </ListGroup>
-            ) : (
-                <p>No profile data to show</p>
-            )}
-            {loading ? (
-                <Button variant='primary'></Button>
-            ) : profileData ? (
-                <Link to="/update-profile" state={{isEdit: true, profile: profileData}}>
-                    <Button variant='primary'>Update profile</Button>
-                </Link>
-            ) : (
-                <Link to="/update-profile" state={{isEdit: false, userId: user.id}}>
-                    <Button variant='primary'>Create profile</Button>
-                </Link>
             )}
         </Container>
     );

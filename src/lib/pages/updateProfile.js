@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
 import { addProfile, patchProfile } from '../components/api';
 import { Form, Button, Container } from 'react-bootstrap';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const UpdateProfilePage = () => {
     const location = useLocation()
     const { isEdit, profile, userId } = location.state || {}
 
     const [about, setAbout] = useState(profile ? profile.about : '');
+
+    const navigate = useNavigate()
 
     const handleInputChange = (event) => {
         setAbout(event.target.value)
@@ -31,6 +33,8 @@ const UpdateProfilePage = () => {
         } catch (error) {
             console.error('Error setting user profile:', error)
         }
+        navigate('/profile')
+        window.location.reload()
     }
 
     return (
