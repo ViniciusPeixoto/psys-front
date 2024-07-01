@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getCurrentUser, getProfile } from '../components/api';
 import { Button, Container, ListGroup } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { format } from 'date-fns';
 
 const ProfilePage = () => {
     const [profileData, setProfileData] = useState(null);
@@ -31,6 +32,11 @@ const ProfilePage = () => {
         fetchCurrentUser();
     }, []);
 
+    const formatDateTime = (dateTime) => {
+        const date = new Date(dateTime)
+        return format(date, 'd MMMM u')
+    }
+
     return (
         <Container className='mt-5'>
             <h2>Profile information</h2>
@@ -44,7 +50,7 @@ const ProfilePage = () => {
             {profileData ? (
                 <ListGroup>
                     <ListGroup.Item><strong>About:</strong> {profileData.about}</ListGroup.Item>
-                    <ListGroup.Item><strong>Date joined:</strong> {profileData.joined}</ListGroup.Item>
+                    <ListGroup.Item><strong>Date joined:</strong> {formatDateTime(profileData.joined)}</ListGroup.Item>
                 </ListGroup>
             ) : (
                 <p>No profile data to show</p>
