@@ -577,7 +577,7 @@ export const patchProfile = async (profileId, profileData) => {
 }
 
 export const getLogin = async (userCredentials) => {
-    const endpoint = apiUri+"/auth/login/"
+    const endpoint = apiUri+"/login/"
     const csrfToken = getCookie('csrftoken')
 
     try {
@@ -599,9 +599,30 @@ export const getLogin = async (userCredentials) => {
     }
 }
 
+export const getLogout = async () => {
+    const endpoint = apiUri+"/login/logout"
+    const csrfToken = getCookie('csrftoken')
+
+    try {
+        const response = await fetch(endpoint,
+            {
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                credentials: 'include'
+            }
+        )
+        return response
+    } catch (error) {
+        console.error("Error fetching data from API: ", error);
+        throw error;
+    }
+}
 
 export const getCurrentUser = async () => {
-    const endpoint = apiUri+"/current_user/"
+    const endpoint = apiUri+"/login/"
 
     try {
         const response = await fetch(
