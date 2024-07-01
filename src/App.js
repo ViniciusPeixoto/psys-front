@@ -1,25 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+
+import NavBarComponent from './lib/components/navBar';
+
+import './style/bootstrap.css';
+import HomePage from './lib/pages/home';
+import ProfilePage from './lib/pages/profile';
+import PlantedPage from './lib/pages/planted';
+import TreesPage from './lib/pages/trees';
+import LoginPage from './lib/pages/login';
+import { UserProvider } from './lib/components/userContext';
+import UpdateProfilePage from './lib/pages/updateProfile';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <UserProvider>
+      <Router>
+        <div>
+          <NavBarComponent />
+          <Routes>
+            <Route exact path='/' Component={HomePage} />
+            <Route exact path='/profile' Component={ProfilePage} />
+            <Route exact path='/update_profile' Component={UpdateProfilePage} />
+            <Route exact path='/planted' Component={PlantedPage} />
+            <Route exact path='/trees' Component={TreesPage} />
+            <Route exact path='/login' Component={LoginPage} />
+          </Routes>
+        </div>
+      </Router>
+    </UserProvider>
   );
-}
+};
 
 export default App;
