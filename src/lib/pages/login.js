@@ -24,6 +24,7 @@ const LoginPage = () => {
             return
         }
         navigate('/')
+        window.location.reload()
     }
 
     return (

@@ -358,8 +358,8 @@ export const deletePlanted = async (plantedId) => {
     }
 }
 
-export const listPlantedAccount = async () => {
-    const endpoint = apiUri+"/planted/account/"
+export const listPlantedAccount = async (accountName) => {
+    const endpoint = apiUri+`/planted/account?account=${accountName}`
 
     try {
         const response = await fetch(
@@ -489,15 +489,14 @@ export const getLogin = async (userCredentials) => {
 }
 
 export const getLogout = async () => {
-    const endpoint = apiUri+"/login/logout"
+    const endpoint = apiUri+"/logout/"
     const csrfToken = getCookie('csrftoken')
 
     try {
         const response = await fetch(endpoint,
             {
-                method: "POST",
+                method: "DELETE",
                 headers: {
-                    'Content-Type': 'application/json',
                     'X-CSRFToken': csrfToken
                 },
                 credentials: 'include'

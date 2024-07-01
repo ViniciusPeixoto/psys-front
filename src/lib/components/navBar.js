@@ -1,7 +1,39 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import { getCurrentUser, getLogout } from './api';
 
 const NavBarComponent = () => {
+    const [user, setUser] = useState(null);
+
+    useEffect(() => {
+        const fetchCurrentUser = async () => {
+            try{
+                const user_response = await getCurrentUser();
+                if (!user_response.ok) {
+                    throw new Error('Failed to fetch current user')
+                }
+                const userData = await user_response.json();
+                setUser(userData);
+            } catch (error) {
+                console.error('Error fetching current user:', error)
+            }
+        };
+
+        fetchCurrentUser();
+    }, []);
+
+    const handleLogout = async () => {
+        try {
+            const response = await getLogout()
+            if (!response.ok) {
+                throw new Error('Failed to log out current user')
+            }
+            window.location.reload()
+        } catch (error) {
+            console.error('Error fetching current user:', error)
+        }
+    }
+
     return (
         <Navbar bg='dark' variant='dark' expand='lg'>
             <Navbar.Brand href='/'>PSYS</Navbar.Brand>
@@ -16,9 +48,15 @@ const NavBarComponent = () => {
                         <NavDropdown.Item href='/trees'>Tree Collection</NavDropdown.Item>
                     </NavDropdown>
                 </Nav>
-                <Nav className='ms-auto'>
-                    <Nav.Link href='/login'>Login</Nav.Link>
-                </Nav>
+                {user ? (
+                    <Nav className='ms-auto'>
+                        <Nav.Link onClick={handleLogout}>Logout</Nav.Link>
+                    </Nav>
+                ) : (
+                    <Nav className='ms-auto'>
+                        <Nav.Link href='/login'>Login</Nav.Link>
+                    </Nav>
+                )}
             </Navbar.Collapse>
         </Navbar>
     );
